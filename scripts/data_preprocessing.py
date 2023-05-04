@@ -1,14 +1,12 @@
 import logging
 import pickle
-import re
 
-import nltk
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 
 from scripts import SCRIPTS_PATH
-from nltk.corpus import stopwords
-from nltk.stem.porter import PorterStemmer
+
+from scripts.utils import remove_stopwords
 
 log = logging.getLogger(__name__)
 
@@ -27,21 +25,7 @@ def data_preprocess():
 
     # Data pre-processing
     log.info("Pre-process the dataset...")
-    nltk.download("stopwords")
-    ps = PorterStemmer()
-
-    all_stopwords = stopwords.words("english")
-    all_stopwords.remove("not")
-
-    corpus = []
-
-    for i in range(0, 900):
-        review = re.sub("[^a-zA-Z]", " ", dataset["Review"][i])
-        review = review.lower()
-        review = review.split()
-        review = [ps.stem(word) for word in review if not word in set(all_stopwords)]
-        review = " ".join(review)
-        corpus.append(review)
+    corpus = remove_stopwords(dataset)
 
     # Transform data
     log.info("Transforming the dataset...")
