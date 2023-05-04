@@ -5,7 +5,7 @@ WORKDIR /root/model-training/
 COPY requirements.txt .
 
 # Install requirements
-RUN mkdir ml_models && python -m pip install --upgrade pip && pip install -r requirements.txt
+RUN mkdir ml_models && mkdir output && python -m pip install --upgrade pip && pip install -r requirements.txt
 
 # Improt files
 COPY . .
