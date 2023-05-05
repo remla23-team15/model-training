@@ -3,8 +3,6 @@ Contains the ML training pipeline.
 
 ## How To Run It
 
-Open your terminal in the project folder and run
-
 #### Clone
 
 Clone this repo to your local machine using 
@@ -42,7 +40,7 @@ To build a Docker image of the application, you can open the terminal (in the ap
 docker build -t ghcr.io/remla23-team15/model-training:VERSION .
 ```
 
-**VERSION indicates the version that you want to apply to the Docker image, for example 1.0, latest or so.**
+**VERSION indicates the version that you want to apply to the Docker image, for example 1.0.0, latest or so.**
 
 ## Contributors
 
