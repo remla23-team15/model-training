@@ -13,7 +13,7 @@ git clone https://github.com/remla23-team15/model-training.git
 #### Create Virtual Environment (venv)
 Move to  the application folder and run in your terminal:
 ```
-# Create virtualenv, make sure to use python3.8
+# Create virtualenv, make sure to use python >= 3.8
 $ virtualenv -p python3 venv
 # Activate venv
 $ source venv/bin/activate
@@ -31,6 +31,10 @@ pip install -r requirements.txt
 #### Run
 Move to  the application folder and run in your terminal:
 ```
+# Make sure to create the "output" directory to store the predictions results
+mkdir output
+
+# Run the model training pipeline
 python run.py
 ```
 
