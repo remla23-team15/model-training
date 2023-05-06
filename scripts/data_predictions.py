@@ -1,5 +1,6 @@
 import logging
 import pickle
+import os
 
 import joblib
 import pandas as pd
@@ -43,6 +44,9 @@ def data_predictions():
 
     dataset['predicted_label'] = y_pred.tolist()
     log.info(dataset[dataset['predicted_label'] == 1])
+
+    # Create output folder if it does not exist yet
+    os.makedirs(f"{SCRIPTS_PATH}/output", exist_ok=True)
 
     # Store results
     dataset.to_csv(

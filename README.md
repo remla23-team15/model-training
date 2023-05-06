@@ -31,10 +31,6 @@ pip install -r requirements.txt
 #### Run
 Move to  the application folder and run in your terminal:
 ```
-# Make sure to create the "output" directory to store the predictions results
-mkdir output
-
-# Run the model training pipeline
 python run.py
 ```
 
