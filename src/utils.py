@@ -1,10 +1,16 @@
 import re
+from argparse import ArgumentParser
+import yaml
 
 import nltk
 
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
+from pathlib import Path
+
+
+SCRIPTS_PATH = Path(__file__).resolve().parent.parent
 
 def remove_stopwords(dataset):
     """
@@ -30,3 +36,16 @@ def remove_stopwords(dataset):
         corpus.append(review)
 
     return corpus
+
+def parse_params():
+    """
+    Get parameters from params.yaml file
+    """
+    args_parser = ArgumentParser()
+    args_parser.add_argument('--params', dest='params', required=True)
+    args = args_parser.parse_args()
+
+    with open(args.params) as param_file:
+        params = yaml.safe_load(param_file)
+
+    return params

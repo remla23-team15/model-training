@@ -1,0 +1,65 @@
+stages:
+
+  data_preprocess:
+    cmd: python3 src/data_preprocess.py --params params.yaml
+    deps:
+    - src/data_preprocess.py
+    - src/utils.py
+    - data/a1_RestaurantReviews_HistoricDump.tsv
+    outs:
+    - data/processed/X.pckl
+    - data/processed/X_train.pckl
+    - data/processed/X_test.pckl
+    - data/processed/y.pckl
+    - data/processed/y_train.pckl
+    - data/processed/y_test.pckl
+    - ml_models/c1_BoW_Sentiment_Model.pkl
+    params:
+    - base
+    - data_preprocess
+
+  train:
+    cmd: python3 src/train.py --params params.yaml
+    deps:
+    - src/train.py
+    - src/utils.py
+    - data/processed/X_train.pckl
+    - data/processed/y_train.pckl
+    outs:
+    - ml_models/c2_Classifier_Sentiment_Model
+    params:
+    - base
+    - data_preprocess
+    - train
+
+  evaluation:
+    cmd: python3 src/evaluation.py --params params.yaml
+    deps:
+    - src/evaluation.py
+    - src/utils.py
+    - data/processed/X_test.pckl
+    - data/processed/y_test.pckl
+    - ml_models/c2_Classifier_Sentiment_Model
+    outs:
+    - outputs/metrics.yaml
+    params:
+    - base
+    - data_preprocess
+    - train
+    - eval
+
+  prediction:
+    cmd: python3 src/prediction.py --params params.yaml
+    deps:
+    - src/prediction.py
+    - src/utils.py
+    - data/a2_RestaurantReviews_FreshDump.tsv
+    - ml_models/c1_BoW_Sentiment_Model.pkl
+    - ml_models/c2_Classifier_Sentiment_Model
+    outs:
+    - outputs/c3_Predicted_Sentiments_Fresh_Dump.tsv
+    params:
+    - base
+    - data_preprocess
+    - train
+    - eval
