@@ -13,6 +13,7 @@ def main():
     
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
     log = logging.getLogger(__name__)
+    log.info("-------- DATA PRE-PROCESSING ----------")
     
     params = utils.parse_params()
     SEED: int = params['base']['seed']
@@ -37,7 +38,8 @@ def main():
 
     # Transform data
     log.info("Transforming the dataset...")
-    cv = CountVectorizer(MAX_FEATURES)
+    print(f'MAX_FEATURES: {MAX_FEATURES}')
+    cv = CountVectorizer(max_features=MAX_FEATURES)
 
     X = cv.fit_transform(corpus).toarray()
     y = dataset.iloc[:, -1].values

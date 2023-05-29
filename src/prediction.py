@@ -18,7 +18,7 @@ def main():
     params = utils.parse_params()
     SEED: int = params['base']['seed']
     DATASET_A2_PATH: str = params['eval']['dataset_eval']
-    MODEL_C1_PATH: str = params['data_preprocessed']['model_c1']
+    MODEL_C1_PATH: str = params['data_preprocess']['model_c1']
     MODEL_C2_PATH: str = params['train']['model_c2']
     MODEL_C3_PATH: str = params['eval']['model_c3']
 

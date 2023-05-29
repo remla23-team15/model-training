@@ -5,10 +5,13 @@ WORKDIR /root/model-training/
 COPY requirements.txt .
 
 # Install requirements
-RUN mkdir ml_models && mkdir output && python -m pip install --upgrade pip && pip install -r requirements.txt
+RUN mkdir ml_models 
+RUN mkdir output
+RUN python -m pip install --upgrade pip
+RUN pip install -r requirements.txt
 
 # Improt files
 COPY . .
 
 # Train ML model
-RUN python run.py
+RUN dvc repro

@@ -13,7 +13,8 @@ def main():
     
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
     log = logging.getLogger(__name__)
-
+    log.info("-------- CLASSIFIER PREDICTIONS ----------")
+    
     params = utils.parse_params()
     SEED: int = params['base']['seed']
     MODEL_C2_PATH: str = params['train']['model_c2']

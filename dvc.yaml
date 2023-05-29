@@ -40,13 +40,14 @@ stages:
     - data/processed/X_test.pckl
     - data/processed/y_test.pckl
     - ml_models/c2_Classifier_Sentiment_Model
-    outs:
-    - outputs/metrics.yaml
     params:
     - base
     - data_preprocess
     - train
     - eval
+    metrics:
+    - outputs/metrics.yaml:
+        cache: false
 
   prediction:
     cmd: python3 src/prediction.py --params params.yaml

@@ -1,0 +1,153 @@
+schema: '2.0'
+stages:
+  data_preprocess:
+    cmd: python3 src/data_preprocess.py --params params.yaml
+    deps:
+    - path: data/a1_RestaurantReviews_HistoricDump.tsv
+      md5: 102f1f4193e0bdebdd6cce7f13e0a839
+      size: 54686
+    - path: src/data_preprocess.py
+      md5: aa14a0a0b4592d52fe8ce22f5922be7d
+      size: 2553
+    - path: src/utils.py
+      md5: 948b5f34084ed2ef9eba1cede418884a
+      size: 1209
+    params:
+      params.yaml:
+        base:
+          seed: 42
+        data_preprocess:
+          dataset_train: data/a1_RestaurantReviews_HistoricDump.tsv
+          max_features: 1420
+          model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
+          destination_directory: data/processed
+          test_size: 0.2
+    outs:
+    - path: data/processed/X.pckl
+      md5: beadf82af4f6aab7052f62bf666fd1d9
+      size: 10224163
+    - path: data/processed/X_test.pckl
+      md5: 8d050b2c3279c7f6a6e5db2fa6c3b6da
+      size: 2044962
+    - path: data/processed/X_train.pckl
+      md5: ca824519e5e5d2188a4c6ee2a35582bb
+      size: 8179363
+    - path: data/processed/y.pckl
+      md5: 4df609d9f3fc75e8e56172070a045882
+      size: 7351
+    - path: data/processed/y_test.pckl
+      md5: 3d8d830d466afb78221307d26082ce0d
+      size: 1590
+    - path: data/processed/y_train.pckl
+      md5: 433b1b5ebd30b55c08608388767b979c
+      size: 5911
+    - path: ml_models/c1_BoW_Sentiment_Model.pkl
+      md5: 47dd3266a2e611b29b6066036a623f8d
+      size: 39825
+  train:
+    cmd: python3 src/train.py --params params.yaml
+    deps:
+    - path: data/processed/X_train.pckl
+      md5: ca824519e5e5d2188a4c6ee2a35582bb
+      size: 8179363
+    - path: data/processed/y_train.pckl
+      md5: 433b1b5ebd30b55c08608388767b979c
+      size: 5911
+    - path: src/train.py
+      md5: b0af150b9cc86d9b76dedcfaaddacbbb
+      size: 1200
+    - path: src/utils.py
+      md5: 948b5f34084ed2ef9eba1cede418884a
+      size: 1209
+    params:
+      params.yaml:
+        base:
+          seed: 42
+        data_preprocess:
+          dataset_train: data/a1_RestaurantReviews_HistoricDump.tsv
+          max_features: 1420
+          model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
+          destination_directory: data/processed
+          test_size: 0.2
+        train:
+          model_c2: ml_models/c2_Classifier_Sentiment_Model
+    outs:
+    - path: ml_models/c2_Classifier_Sentiment_Model
+      md5: 92e839d6a2b7e857bef8d8511279451b
+      size: 46215
+  evaluation:
+    cmd: python3 src/evaluation.py --params params.yaml
+    deps:
+    - path: data/processed/X_test.pckl
+      md5: 8d050b2c3279c7f6a6e5db2fa6c3b6da
+      size: 2044962
+    - path: data/processed/y_test.pckl
+      md5: 3d8d830d466afb78221307d26082ce0d
+      size: 1590
+    - path: ml_models/c2_Classifier_Sentiment_Model
+      md5: 92e839d6a2b7e857bef8d8511279451b
+      size: 46215
+    - path: src/evaluation.py
+      md5: 2d92c3c935d1ce3429ee7771240a4616
+      size: 1583
+    - path: src/utils.py
+      md5: 948b5f34084ed2ef9eba1cede418884a
+      size: 1209
+    params:
+      params.yaml:
+        base:
+          seed: 42
+        data_preprocess:
+          dataset_train: data/a1_RestaurantReviews_HistoricDump.tsv
+          max_features: 1420
+          model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
+          destination_directory: data/processed
+          test_size: 0.2
+        eval:
+          dataset_eval: data/a2_RestaurantReviews_FreshDump.tsv
+          metrics_file: outputs/metrics.yaml
+          model_c3: outputs/c3_Predicted_Sentiments_Fresh_Dump.tsv
+        train:
+          model_c2: ml_models/c2_Classifier_Sentiment_Model
+    outs:
+    - path: outputs/metrics.yaml
+      md5: 8bdc37c2049c9c2c41e24e58275cb585
+      size: 104
+  prediction:
+    cmd: python3 src/prediction.py --params params.yaml
+    deps:
+    - path: data/a2_RestaurantReviews_FreshDump.tsv
+      md5: 097c8b95f6b255e5a6a06b29d61fef8e
+      size: 6504
+    - path: ml_models/c1_BoW_Sentiment_Model.pkl
+      md5: 47dd3266a2e611b29b6066036a623f8d
+      size: 39825
+    - path: ml_models/c2_Classifier_Sentiment_Model
+      md5: 92e839d6a2b7e857bef8d8511279451b
+      size: 46215
+    - path: src/prediction.py
+      md5: dff656144272e24afc6eec5efdaad19f
+      size: 2195
+    - path: src/utils.py
+      md5: 948b5f34084ed2ef9eba1cede418884a
+      size: 1209
+    params:
+      params.yaml:
+        base:
+          seed: 42
+        data_preprocess:
+          dataset_train: data/a1_RestaurantReviews_HistoricDump.tsv
+          max_features: 1420
+          model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
+          destination_directory: data/processed
+          test_size: 0.2
+        eval:
+          dataset_eval: data/a2_RestaurantReviews_FreshDump.tsv
+          metrics_file: outputs/metrics.yaml
+          model_c3: outputs/c3_Predicted_Sentiments_Fresh_Dump.tsv
+        train:
+          model_c2: ml_models/c2_Classifier_Sentiment_Model
+    outs:
+    - path: outputs/c3_Predicted_Sentiments_Fresh_Dump.tsv
+      md5: 863657a942e0ef8242d47190f4355823
+      size: 6728

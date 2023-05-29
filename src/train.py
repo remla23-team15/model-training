@@ -13,7 +13,8 @@ def main():
     
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
     log = logging.getLogger(__name__)
-
+    log.info("-------- CLASSIFIER TRAINING ----------")
+    
     params = utils.parse_params()
     SEED: int = params['base']['seed']
     DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
