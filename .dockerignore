@@ -1,6 +1,11 @@
 *venv
-output
+.github
+data/processed/*.pckl
+data/processed/.gitignore
+outputs/*.tsv
+outputs/.gitignore
 ml_models
 Dockerfile
 .gitignore
 README.md
+.env
