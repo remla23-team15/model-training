@@ -1,16 +1,14 @@
 import re
 from argparse import ArgumentParser
-import yaml
+from pathlib import Path
 
 import nltk
-
+import yaml
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
-from pathlib import Path
-
-
 SCRIPTS_PATH = Path(__file__).resolve().parent.parent
+
 
 def remove_stopwords(dataset):
     """
@@ -36,6 +34,7 @@ def remove_stopwords(dataset):
         corpus.append(review)
 
     return corpus
+
 
 def parse_params():
     """

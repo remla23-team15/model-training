@@ -1,13 +1,12 @@
-""" Description """
+import logging
+import os
+import pickle
+import random
 
 import joblib
-import random
-import utils
-import yaml
-import logging
-import pickle
-import os
 import pandas as pd
+
+import utils
 
 
 def main():
@@ -57,7 +56,6 @@ def main():
     # Store results
     dataset.to_csv(utils.SCRIPTS_PATH / MODEL_C3_PATH, sep="\t", encoding="UTF-8", index=False)
 
-
     # Try with single inputs
     log.info("Predicting single inputs...")
     prediction_map = {
@@ -76,5 +74,5 @@ def main():
         log.info(f"{review} ---> {prediction_map[prediction]}")
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
