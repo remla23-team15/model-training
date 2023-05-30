@@ -1,13 +1,13 @@
-""" Description """
-
-import joblib
-import random
-import utils
-import yaml
 import logging
 import pickle
-from sklearn.metrics import (accuracy_score, precision_score, 
-                            recall_score, f1_score)
+import random
+
+import joblib
+import yaml
+from sklearn.metrics import (accuracy_score, precision_score, recall_score, f1_score)
+
+import utils
+
 
 def main():
     
@@ -46,5 +46,5 @@ def main():
         yaml.dump(metrics, file, default_flow_style=False)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()

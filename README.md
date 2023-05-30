@@ -31,7 +31,7 @@ pip install -r requirements.txt
 #### Run
 Move to  the application folder and run in your terminal:
 ```
-python run.py
+dvc repro
 ```
 
 ## Docker

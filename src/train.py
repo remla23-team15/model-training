@@ -1,12 +1,11 @@
-""" Description """
-
 import logging
-import joblib
-from sklearn.metrics import confusion_matrix, accuracy_score
-from sklearn.naive_bayes import GaussianNB
 import pickle
-import utils
 import random
+
+import joblib
+from sklearn.naive_bayes import GaussianNB
+
+import utils
 
 
 def main():
@@ -36,5 +35,5 @@ def main():
     joblib.dump(model, utils.SCRIPTS_PATH / MODEL_C2_PATH)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()

@@ -7,11 +7,11 @@ stages:
       md5: 102f1f4193e0bdebdd6cce7f13e0a839
       size: 54686
     - path: src/data_preprocess.py
-      md5: aa14a0a0b4592d52fe8ce22f5922be7d
-      size: 2553
+      md5: eee67b991313429b330d4cb83c6377d1
+      size: 2536
     - path: src/utils.py
-      md5: 948b5f34084ed2ef9eba1cede418884a
-      size: 1209
+      md5: 4ce916760e3f309ed31fd580d0237b28
+      size: 1208
     params:
       params.yaml:
         base:
@@ -21,44 +21,44 @@ stages:
           max_features: 1420
           model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
           destination_directory: data/processed
-          test_size: 0.3
+          test_size: 0.25
     outs:
     - path: data/processed/X.pckl
       md5: beadf82af4f6aab7052f62bf666fd1d9
       size: 10224163
     - path: data/processed/X_test.pckl
-      md5: 5f7c8a94b59c53c4b340a10dd34ac0f1
-      size: 3067363
+      md5: a137185cbefa405311881698102dec52
+      size: 2556162
     - path: data/processed/X_train.pckl
-      md5: 4fc2ec9528d834607ea33640975dbd78
-      size: 7156963
+      md5: b3dc5cef9d0eaae070b126df6b9774f3
+      size: 7668163
     - path: data/processed/y.pckl
       md5: 4df609d9f3fc75e8e56172070a045882
       size: 7351
     - path: data/processed/y_test.pckl
-      md5: 9f4af4c6ebfd21fcfc0d5567d398a194
-      size: 2311
+      md5: 89be2377a6a39e3babab4abbcf28059d
+      size: 1950
     - path: data/processed/y_train.pckl
-      md5: c6acd47d53d7f645728a1033a9762568
-      size: 5191
+      md5: adc0729039f603fc49137cea0b7a151e
+      size: 5551
     - path: ml_models/c1_BoW_Sentiment_Model.pkl
-      md5: d4032e09eed9118ef3c0d11ae9e1679b
-      size: 39825
+      md5: d9cdfdd14dff37f5876153bd2ba36190
+      size: 39823
   train:
     cmd: python3 src/train.py --params params.yaml
     deps:
     - path: data/processed/X_train.pckl
-      md5: 4fc2ec9528d834607ea33640975dbd78
-      size: 7156963
+      md5: b3dc5cef9d0eaae070b126df6b9774f3
+      size: 7668163
     - path: data/processed/y_train.pckl
-      md5: c6acd47d53d7f645728a1033a9762568
-      size: 5191
+      md5: adc0729039f603fc49137cea0b7a151e
+      size: 5551
     - path: src/train.py
-      md5: b0af150b9cc86d9b76dedcfaaddacbbb
-      size: 1200
+      md5: 988ae1985a4ad88d0710c13da64b33a9
+      size: 1123
     - path: src/utils.py
-      md5: 948b5f34084ed2ef9eba1cede418884a
-      size: 1209
+      md5: 4ce916760e3f309ed31fd580d0237b28
+      size: 1208
     params:
       params.yaml:
         base:
@@ -68,31 +68,31 @@ stages:
           max_features: 1420
           model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
           destination_directory: data/processed
-          test_size: 0.3
+          test_size: 0.25
         train:
           model_c2: ml_models/c2_Classifier_Sentiment_Model
     outs:
     - path: ml_models/c2_Classifier_Sentiment_Model
-      md5: b97c2d8424795c7e3db8060c09fdeb51
+      md5: b39293e47da1d953626263239ac9bcbb
       size: 46215
   evaluation:
     cmd: python3 src/evaluation.py --params params.yaml
     deps:
     - path: data/processed/X_test.pckl
-      md5: 5f7c8a94b59c53c4b340a10dd34ac0f1
-      size: 3067363
+      md5: a137185cbefa405311881698102dec52
+      size: 2556162
     - path: data/processed/y_test.pckl
-      md5: 9f4af4c6ebfd21fcfc0d5567d398a194
-      size: 2311
+      md5: 89be2377a6a39e3babab4abbcf28059d
+      size: 1950
     - path: ml_models/c2_Classifier_Sentiment_Model
-      md5: b97c2d8424795c7e3db8060c09fdeb51
+      md5: b39293e47da1d953626263239ac9bcbb
       size: 46215
     - path: src/evaluation.py
-      md5: 2d92c3c935d1ce3429ee7771240a4616
-      size: 1583
+      md5: 7360a3029f7f6d05975a42537fe2da5d
+      size: 1539
     - path: src/utils.py
-      md5: 948b5f34084ed2ef9eba1cede418884a
-      size: 1209
+      md5: 4ce916760e3f309ed31fd580d0237b28
+      size: 1208
     params:
       params.yaml:
         base:
@@ -102,7 +102,7 @@ stages:
           max_features: 1420
           model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
           destination_directory: data/processed
-          test_size: 0.3
+          test_size: 0.25
         eval:
           dataset_eval: data/a2_RestaurantReviews_FreshDump.tsv
           metrics_file: outputs/metrics.yaml
@@ -111,8 +111,8 @@ stages:
           model_c2: ml_models/c2_Classifier_Sentiment_Model
     outs:
     - path: outputs/metrics.yaml
-      md5: d42e82989b4cf2cd68915923febacc3a
-      size: 103
+      md5: 3b3c1c38a7baf2f5adab17674d8347ea
+      size: 104
   prediction:
     cmd: python3 src/prediction.py --params params.yaml
     deps:
@@ -120,17 +120,17 @@ stages:
       md5: 097c8b95f6b255e5a6a06b29d61fef8e
       size: 6504
     - path: ml_models/c1_BoW_Sentiment_Model.pkl
-      md5: d4032e09eed9118ef3c0d11ae9e1679b
-      size: 39825
+      md5: d9cdfdd14dff37f5876153bd2ba36190
+      size: 39823
     - path: ml_models/c2_Classifier_Sentiment_Model
-      md5: b97c2d8424795c7e3db8060c09fdeb51
+      md5: b39293e47da1d953626263239ac9bcbb
       size: 46215
     - path: src/prediction.py
-      md5: dff656144272e24afc6eec5efdaad19f
-      size: 2195
+      md5: 8dae0b884d995d9a99a24707bedeec17
+      size: 2166
     - path: src/utils.py
-      md5: 948b5f34084ed2ef9eba1cede418884a
-      size: 1209
+      md5: 4ce916760e3f309ed31fd580d0237b28
+      size: 1208
     params:
       params.yaml:
         base:
@@ -140,7 +140,7 @@ stages:
           max_features: 1420
           model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
           destination_directory: data/processed
-          test_size: 0.3
+          test_size: 0.25
         eval:
           dataset_eval: data/a2_RestaurantReviews_FreshDump.tsv
           metrics_file: outputs/metrics.yaml
@@ -149,5 +149,5 @@ stages:
           model_c2: ml_models/c2_Classifier_Sentiment_Model
     outs:
     - path: outputs/c3_Predicted_Sentiments_Fresh_Dump.tsv
-      md5: 8dd2d62ff3e3c656abbc9f398dce3ebd
+      md5: 1d77ef3231f7e89482eaa836cc3a6331
       size: 6728

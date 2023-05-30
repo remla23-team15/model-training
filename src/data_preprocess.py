@@ -1,12 +1,12 @@
-""" Description """
-
 import logging
 import pickle
+import random
+
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
+
 import utils
-import random 
 
 
 def main():
@@ -65,5 +65,5 @@ def main():
     pickle.dump(y_test, open(utils.SCRIPTS_PATH / DESTINATION_DIR / "y_test.pckl", "wb"))
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
