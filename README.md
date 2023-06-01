@@ -34,6 +34,16 @@ Move to  the application folder and run in your terminal:
 dvc repro
 ```
 
+#### Test
+Move to  the application folder and run in your terminal:
+```
+# Install packages needed for tests
+pip install -r requirements-ci.txt
+
+# Run tests
+pytest
+```
+
 ## Docker
 To build a Docker image of the application, you can open the terminal (in the application folder) and run:
 ```shell script
