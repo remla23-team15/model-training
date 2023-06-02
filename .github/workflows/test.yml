@@ -1,0 +1,57 @@
+name: Test
+
+# Trigger when branches are pushed
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      # Set Python version
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      # Cache dependencies
+      - name: Cache dependencies setup
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-ci.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-ci.txt
+
+      # Run tests
+      - name: Run tests
+        run: |
+          coverage run -m pytest --junitxml=reports/junit/junit.xml
+          coverage report
+          coverage xml
+
+      # Upload Junit report
+      - name: Upload Junit report
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-report
+          path: reports/junit/junit.xml
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
+
+      # Upload Coverage report
+      - name: Upload Coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: cobertura-report
+          path: reports/coverage/xml/coverage.xml
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
