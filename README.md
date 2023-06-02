@@ -42,6 +42,18 @@ pip install -r requirements-ci.txt
 
 # Run tests
 pytest
+
+# Run tests with coverage and generate reports (will be added to the reports folder)
+coverage run -m pytest --junitxml=reports/junit/junit.xml
+
+# To print the branch coverage detials in the terminal
+coverage report
+# To generate a full XML report
+coverage xml
+# To generate a full HTML report
+coverage html
+# To generate a full JSON report
+coverage json
 ```
 
 ## Docker
