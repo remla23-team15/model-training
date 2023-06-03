@@ -55,3 +55,12 @@ jobs:
           path: reports/coverage/xml/coverage.xml
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
+
+      # Create test results and coverage report comment
+      - name: Pytest results comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: ./reports/coverage/xml/coverage.xml
+          junitxml-path: ./reports/junit/junit.xml
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
