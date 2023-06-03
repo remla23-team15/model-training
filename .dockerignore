@@ -9,3 +9,8 @@ Dockerfile
 .gitignore
 README.md
 .env
+.pytest_cache
+.coverage
+reports
+requirements-ci.txt
+pyproject.toml
