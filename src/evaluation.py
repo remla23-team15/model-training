@@ -9,6 +9,20 @@ from sklearn.metrics import (accuracy_score, precision_score, recall_score, f1_s
 import utils
 
 
+def evaluate_model(model, X_test, y_test):
+
+    y_pred = model.predict(X_test)
+
+    # Calculate metrics
+    metrics = {}
+    metrics["acc"] = float(accuracy_score(y_test, y_pred))
+    metrics["precision"] = float(precision_score(y_test, y_pred))
+    metrics["recall"] = float(recall_score(y_test, y_pred))
+    metrics["f1"] = float(f1_score(y_test, y_pred))
+
+    return metrics
+
+
 def main():
     
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
@@ -32,14 +46,7 @@ def main():
 
     # Evaluate performance
     log.info("Model performance evaluation...")
-    y_pred = model.predict(X_test)
-
-    # Calculate metrics
-    metrics = {}
-    metrics["acc"] = float(accuracy_score(y_test, y_pred))
-    metrics["precision"] = float(precision_score(y_test, y_pred))
-    metrics["recall"] = float(recall_score(y_test, y_pred))
-    metrics["f1"] = float(f1_score(y_test, y_pred))
+    metrics = evaluate_model(model, X_test, y_test)
 
     # Save metrics
     with open(utils.SCRIPTS_PATH / METRICS_PATH, 'w') as file:

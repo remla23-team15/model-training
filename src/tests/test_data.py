@@ -24,6 +24,7 @@ def test_no_duplicate_reviews(dataset_a1_df, dataset_a2_df):
     assert len(dataset_a2_df['Review']) == dataset_a2_df.shape[0]
 
 
+# Test for empty reviews
 def test_no_empty_reviews(dataset_a1_df, dataset_a2_df):
     assert all ([len(review) > 0 for review in dataset_a1_df['Review']])
     assert all ([len(review) > 0 for review in dataset_a2_df['Review']])
