@@ -1,0 +1,17 @@
+[tool.pytest.ini_options]
+testpaths = "src/tests"
+addopts = "--doctest-modules"
+filterwarnings = "ignore::DeprecationWarning"
+
+[tool.coverage.run]
+branch = true
+omit = ["*venv/*", ".dvc", ".github", ".pytest_cache", "data", "ml_models", "outputs"]
+
+[tool.coverage.html]
+directory = "reports/coverage/html"
+
+[tool.coverage.xml]
+output = "reports/coverage/xml/coverage.xml"
+
+[tool.coverage.json]
+output = "reports/coverage/json/coverage.json"

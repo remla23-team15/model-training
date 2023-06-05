@@ -34,6 +34,28 @@ Move to  the application folder and run in your terminal:
 dvc repro
 ```
 
+#### Test
+Move to  the application folder and run in your terminal:
+```
+# Install packages needed for tests
+pip install -r requirements-ci.txt
+
+# Run tests
+pytest
+
+# Run tests with coverage and generate reports (will be added to the reports folder)
+coverage run -m pytest --junitxml=reports/junit/junit.xml
+
+# To print the branch coverage detials in the terminal
+coverage report
+# To generate a full XML report
+coverage xml
+# To generate a full HTML report
+coverage html
+# To generate a full JSON report
+coverage json
+```
+
 ## Docker
 To build a Docker image of the application, you can open the terminal (in the application folder) and run:
 ```shell script
