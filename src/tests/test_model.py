@@ -1,6 +1,8 @@
 import pandas as pd
 import joblib
 import pickle
+import yaml
+from pathlib import Path
 import random
 from sklearn.dummy import DummyClassifier
 
@@ -12,38 +14,48 @@ from evaluation import evaluate_model
 
 
 @pytest.fixture()
-def trained_model():
-    MODEL_C2_PATH: str = "ml_models/c2_Classifier_Sentiment_Model"
-    trained_model = joblib.load(utils.SCRIPTS_PATH / MODEL_C2_PATH)
-    yield trained_model
+def params():
+    ROOT = Path(__file__).resolve().parent.parent.parent
+    f = open(ROOT / "params.yaml", "r")
+    params = yaml.safe_load(f)
+    f.close()
+    yield params
 
 @pytest.fixture()
-def X_train():
-    DESTINATION_DIR: str = "data/processed"
+def SEED(params):
+    SEED: int = params['base']['seed']
+    yield SEED
+
+@pytest.fixture()
+def X_train(params):
+    DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
     X_train = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "X_train.pckl").read_bytes())
     yield X_train
 
 @pytest.fixture()
-def y_train():
-    DESTINATION_DIR: str = "data/processed"
+def y_train(params):
+    DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
     y_train = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "y_train.pckl").read_bytes())
     yield y_train
 
 @pytest.fixture()
-def X_test():
-    DESTINATION_DIR: str = "data/processed"
+def X_test(params):
+    DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
     X_test = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "X_test.pckl").read_bytes())
     yield X_test
 
 @pytest.fixture()
-def y_test():
-    DESTINATION_DIR: str = "data/processed"
+def y_test(params):
+    DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
     y_test = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "y_test.pckl").read_bytes())
     yield y_test
 
 
 # Test if the model outperforms a Dummy Classifier with uniform strategy
-def test_baseline_uniform(trained_model, X_train, y_train, X_test, y_test):
+def test_baseline_uniform(SEED, X_train, y_train, X_test, y_test):
+
+    trained_model = train_model(SEED, X_train, y_train)
+    
     original_metrics = evaluate_model(trained_model, X_test, y_test)
 
     dummy_model = DummyClassifier(strategy="uniform")
@@ -57,7 +69,10 @@ def test_baseline_uniform(trained_model, X_train, y_train, X_test, y_test):
 
 
 # Test if the model outperforms a Dummy Classifier with most_frequent strategy
-def test_baseline_most_frequent(trained_model, X_train, y_train, X_test, y_test):
+def test_baseline_most_frequent(SEED, X_train, y_train, X_test, y_test):
+
+    trained_model = train_model(SEED, X_train, y_train)
+    
     original_metrics = evaluate_model(trained_model, X_test, y_test)
 
     dummy_model = DummyClassifier(strategy="most_frequent")
@@ -71,12 +86,15 @@ def test_baseline_most_frequent(trained_model, X_train, y_train, X_test, y_test)
 
 
 # Test for non deterministic robustness
-def test_non_deterministic_robustness(trained_model, X_train, y_train, X_test, y_test):
+def test_non_deterministic_robustness(SEED, X_train, y_train, X_test, y_test):
+
+    trained_model = train_model(SEED, X_train, y_train)
+    
     original_metrics = evaluate_model(trained_model, X_test, y_test)
 
     for _ in range(3):
-        seed = random.randint(0, 9999)
-        model_variant = train_model(seed, X_train, y_train)
+        random_seed = random.randint(0, 9999)
+        model_variant = train_model(random_seed, X_train, y_train)
         variant_metrics = evaluate_model(model_variant, X_test, y_test)
 
         assert abs(original_metrics["acc"] - variant_metrics["acc"] <= 0.1)
