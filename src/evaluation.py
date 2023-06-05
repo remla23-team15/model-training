@@ -10,7 +10,6 @@ import utils
 
 
 def evaluate_model(model, X_test, y_test):
-
     y_pred = model.predict(X_test)
 
     # Calculate metrics
@@ -23,12 +22,20 @@ def evaluate_model(model, X_test, y_test):
     return metrics
 
 
+def evaluate_prediction(y_test, y_pred):
+    # Calculate metrics
+    metrics = {}
+    metrics["acc"] = float(accuracy_score(y_test, y_pred))
+    metrics["precision"] = float(precision_score(y_test, y_pred))
+    metrics["recall"] = float(recall_score(y_test, y_pred))
+    metrics["f1"] = float(f1_score(y_test, y_pred))
+
+
 def main():
-    
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
     log = logging.getLogger(__name__)
     log.info("-------- CLASSIFIER PREDICTIONS ----------")
-    
+
     params = utils.parse_params()
     SEED: int = params['base']['seed']
     MODEL_C2_PATH: str = params['train']['model_c2']
