@@ -9,6 +9,28 @@ from sklearn.model_selection import train_test_split
 import utils
 
 
+def preprocess_dataset(dataset):
+    corpus = utils.remove_stopwords(dataset)
+    return corpus
+
+
+def transform_dataset(dataset, corpus, MAX_FEATURES):
+    cv = CountVectorizer(max_features=MAX_FEATURES)
+
+    X = cv.fit_transform(corpus).toarray()
+    y = dataset.iloc[:, -1].values
+
+    return X, y, cv
+
+
+def split_dataset(X, y, TEST_SIZE, SEED):
+    X_train, X_test, y_train, y_test = train_test_split(X, 
+                                                        y, 
+                                                        test_size=TEST_SIZE, 
+                                                        random_state=SEED)
+    return X_train, X_test, y_train, y_test
+
+
 def main():
     
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
@@ -34,22 +56,16 @@ def main():
 
     # Data pre-processing
     log.info("Pre-process the dataset...")
-    corpus = utils.remove_stopwords(dataset)
+    corpus = preprocess_dataset(dataset)
 
     # Transform data
     log.info("Transforming the dataset...")
     print(f'MAX_FEATURES: {MAX_FEATURES}')
-    cv = CountVectorizer(max_features=MAX_FEATURES)
-
-    X = cv.fit_transform(corpus).toarray()
-    y = dataset.iloc[:, -1].values
+    X, y, cv = transform_dataset(dataset, corpus, MAX_FEATURES)
 
     # Split dataset
     log.info("Dividing dataset into training and test set...")
-    X_train, X_test, y_train, y_test = train_test_split(X, 
-                                                        y, 
-                                                        test_size=TEST_SIZE, 
-                                                        random_state=SEED)
+    X_train, X_test, y_train, y_test = split_dataset(X, y, TEST_SIZE, SEED)
 
     # Save pickle object
     log.info("Saving BoW dictionary to later use in prediction...")
