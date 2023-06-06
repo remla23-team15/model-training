@@ -1,19 +1,29 @@
 import pandas as pd
+import yaml
+from pathlib import Path
 import utils
 
 import pytest
 
 
 @pytest.fixture()
-def dataset_a1_df():
-    DATASET_A1_PATH: str = "data/a1_RestaurantReviews_HistoricDump.tsv"
+def params():
+    f = open(utils.SCRIPTS_PATH / "params.yaml", "r")
+    params = yaml.safe_load(f)
+    f.close()
+    yield params
+
+
+@pytest.fixture()
+def dataset_a1_df(params):
+    DATASET_A1_PATH: str = params['data_preprocess']['dataset_train']
     dataset_a1_df = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A1_PATH, delimiter="\t", quoting=3)
     yield dataset_a1_df
 
 
 @pytest.fixture()
-def dataset_a2_df():
-    DATASET_A2_PATH: str = "data/a2_RestaurantReviews_FreshDump.tsv"
+def dataset_a2_df(params):
+    DATASET_A2_PATH: str = params['eval']['dataset_eval']
     dataset_a2_df = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A2_PATH, delimiter="\t", quoting=3)
     yield dataset_a2_df
 

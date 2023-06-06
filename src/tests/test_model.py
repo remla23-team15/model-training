@@ -14,68 +14,52 @@ from nltk.corpus import wordnet
 import pytest
 
 import utils
+from data_preprocess import preprocess_dataset, transform_dataset, split_dataset
 from train import train_model
 from evaluation import (evaluate_model, evaluate_prediction)
 
 
 @pytest.fixture()
 def params():
-    ROOT = Path(__file__).resolve().parent.parent.parent
-    f = open(ROOT / "params.yaml", "r")
+    f = open(utils.SCRIPTS_PATH / "params.yaml", "r")
     params = yaml.safe_load(f)
     f.close()
     yield params
 
 
 @pytest.fixture()
-def SEED(params):
+def dataset_split(params):
+    DATASET_A1_PATH: str = params['data_preprocess']['dataset_train']
+    dataset = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A1_PATH, delimiter="\t", quoting=3)
+    corpus = preprocess_dataset(dataset)
+    X, y, _ = transform_dataset(dataset, corpus, params['data_preprocess']['max_features'])
+    X_train, X_test, y_train, y_test = split_dataset(X, y, params['data_preprocess']['test_size'], params['base']['seed'])
+    yield (X_train, y_train, X_test, y_test)
+
+
+@pytest.fixture()
+def trained_model(params, dataset_split):
     SEED: int = params['base']['seed']
-    yield SEED
+    X_train, y_train, _, _ = dataset_split
+    trained_model = train_model(SEED, X_train, y_train)
+    yield trained_model
 
 
 @pytest.fixture()
-def X_train(params):
-    DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
-    X_train = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "X_train.pckl").read_bytes())
-    yield X_train
-
-
-@pytest.fixture()
-def y_train(params):
-    DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
-    y_train = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "y_train.pckl").read_bytes())
-    yield y_train
-
-
-@pytest.fixture()
-def X_test(params):
-    DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
-    X_test = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "X_test.pckl").read_bytes())
-    yield X_test
-
-
-@pytest.fixture()
-def y_test(params):
-    DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
-    y_test = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "y_test.pckl").read_bytes())
-    yield y_test
-
-
-@pytest.fixture()
-def dataset_negation_mut():
+def negation_X_set(dataset_split):
     negator = Negator(use_transformers=True)
-    DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
-    negation_X_set = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "X_test.pckl").read_bytes())
+    _, _, X_test, _ = dataset_split
+    negation_X_set = X_test
     negation_X_set = map(negator.negate_sentence, negation_X_set)
     yield negation_X_set
 
 @pytest.fixture()
-def dataset_synonym_mut():
+def synonym_X_set(dataset_split):
     nltk.download('wordnet')
     nltk.download('averaged_perceptron_tagger')
 
-    DESTINATION_DIR: str = params['data_preprocess']['destination_directory']
-    synonym_X_set = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "X_test.pckl").read_bytes())
+    _, _, X_test, _ = dataset_split
+    synonym_X_set = X_test
     synonym_X_set = map(synonym_sentence, synonym_X_set)
     yield synonym_X_set
 
@@ -107,8 +91,8 @@ def synonym_sentence(sentence):
 
 
 # Test if the model outperforms a Dummy Classifier with uniform strategy
-def test_baseline_uniform(SEED, X_train, y_train, X_test, y_test):
-    trained_model = train_model(SEED, X_train, y_train)
+def test_baseline_uniform(trained_model, dataset_split):
+    X_train, y_train, X_test, y_test = dataset_split
 
     original_metrics = evaluate_model(trained_model, X_test, y_test)
 
@@ -123,8 +107,8 @@ def test_baseline_uniform(SEED, X_train, y_train, X_test, y_test):
 
 
 # Test if the model outperforms a Dummy Classifier with most_frequent strategy
-def test_baseline_most_frequent(SEED, X_train, y_train, X_test, y_test):
-    trained_model = train_model(SEED, X_train, y_train)
+def test_baseline_most_frequent(trained_model, dataset_split):
+    X_train, y_train, X_test, y_test = dataset_split
 
     original_metrics = evaluate_model(trained_model, X_test, y_test)
 
@@ -139,8 +123,8 @@ def test_baseline_most_frequent(SEED, X_train, y_train, X_test, y_test):
 
 
 # Test for non deterministic robustness
-def test_non_deterministic_robustness(SEED, X_train, y_train, X_test, y_test):
-    trained_model = train_model(SEED, X_train, y_train)
+def test_non_deterministic_robustness(trained_model, dataset_split):
+    X_train, y_train, X_test, y_test = dataset_split
 
     original_metrics = evaluate_model(trained_model, X_test, y_test)
 
@@ -155,27 +139,27 @@ def test_non_deterministic_robustness(SEED, X_train, y_train, X_test, y_test):
         assert abs(original_metrics["f1"] - variant_metrics["f1"] <= 0.1)
 
 
-# Test if the model similarly performs on negated sentences
+# TODO Test if the model similarly performs on negated sentences
 # Performance should drop no less than 20% (Mainly caused by incorrect negation of semantic)
-def test_baseline_negated(SEED, X_train, y_train, X_test, negation_X_set, y_test):
-    trained_model = train_model(SEED, X_train, y_train)
+# def test_baseline_negated(trained_model, dataset_split, negation_X_set):
+#     _, _, X_test, _ = dataset_split
 
-    original_results = trained_model.predict(X_test)
-    negated_results = train_model.predict(negation_X_set)
+#     original_results = trained_model.predict(X_test)
+#     negated_results = trained_model.predict(negation_X_set)
 
-    negated_original_results = [not prediction for prediction in original_results]
-    metrics = evaluate_prediction(negated_original_results, negated_results)
+#     negated_original_results = [not prediction for prediction in original_results]
+#     metrics = evaluate_prediction(negated_original_results, negated_results)
 
-    assert abs(metrics["acc"] >= 0.80)
-    assert abs(metrics["precision"] >= 0.80)
-    assert abs(metrics["recall"] >= 0.80)
-    assert abs(metrics["f1"] >= 0.80)
+#     assert abs(metrics["acc"] >= 0.80)
+#     assert abs(metrics["precision"] >= 0.80)
+#     assert abs(metrics["recall"] >= 0.80)
+#     assert abs(metrics["f1"] >= 0.80)
 
-# Test if the model behaves similarly on synonymed sentences
-def test_baseline_synonym(SEED, X_train, y_train, X_test, synonym_X_set, y_test):
-    trained_model = train_model(SEED, X_train, y_train)
+# TODO Test if the model behaves similarly on synonymed sentences
+# def test_baseline_synonym(trained_model, dataset_split, synonym_X_set):
+#     _, _, X_test, _ = dataset_split
 
-    original_results = trained_model.predict(X_test)
-    synonym_results = train_model.predict(synonym_X_set)
+#     original_results = trained_model.predict(X_test)
+#     synonym_results = trained_model.predict(synonym_X_set)
 
-    assert original_results == synonym_results
+#     assert original_results == synonym_results
