@@ -66,7 +66,7 @@ def synonym_X_set(params):
 
     DATASET_A1_PATH: str = params['data_preprocess']['dataset_train']
     dataset = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A1_PATH, delimiter="\t", quoting=3)
-    dataset["Review"] = list(map(synonym_sentence, dataset["Review"]))
+    dataset["Review"] = [synonym_sentence(review) for review in dataset["Review"]]
     corpus = preprocess_dataset(dataset)
 
     X, y, _ = transform_dataset(dataset, corpus, params['data_preprocess']['max_features'])
