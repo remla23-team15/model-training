@@ -30,6 +30,7 @@ def evaluate_prediction(y_test, y_pred):
     metrics["recall"] = float(recall_score(y_test, y_pred))
     metrics["f1"] = float(f1_score(y_test, y_pred))
 
+    return metrics
 
 def main():
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
