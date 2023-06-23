@@ -1,3 +1,4 @@
+""" data_preprocess.py """
 import logging
 import pickle
 import random
@@ -10,11 +11,13 @@ import utils
 
 
 def preprocess_dataset(dataset):
+    """ Preprocess: remove stopwords """
     corpus = utils.remove_stopwords(dataset)
     return corpus
 
 
 def transform_dataset(dataset, corpus, MAX_FEATURES):
+    """ Transform dataset ... """
     cv = CountVectorizer(max_features=MAX_FEATURES)
 
     X = cv.fit_transform(corpus).toarray()
@@ -24,19 +27,22 @@ def transform_dataset(dataset, corpus, MAX_FEATURES):
 
 
 def split_dataset(X, y, TEST_SIZE, SEED):
-    X_train, X_test, y_train, y_test = train_test_split(X, 
-                                                        y, 
-                                                        test_size=TEST_SIZE, 
+    """ Split dataset in train and test sets. """
+    X_train, X_test, y_train, y_test = train_test_split(X,
+                                                        y,
+                                                        test_size=TEST_SIZE,
                                                         random_state=SEED)
     return X_train, X_test, y_train, y_test
 
 
 def main():
-    
-    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
+    """ Main """
+
+    logging.basicConfig(level=logging.DEBUG,
+                        format="%(asctime)s %(levelname)s %(name)s : %(message)s")
     log = logging.getLogger(__name__)
     log.info("-------- DATA PRE-PROCESSING ----------")
-    
+
     params = utils.parse_params()
     SEED: int = params['base']['seed']
     DATASET_A1_PATH: str = params['data_preprocess']['dataset_train']

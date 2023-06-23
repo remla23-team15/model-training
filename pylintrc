@@ -204,7 +204,14 @@ good-names=i,
            k,
            ex,
            Run,
-           _
+           _,
+           cv,
+           X,
+           y,
+           X_train,
+           X_test,
+           y_train,
+           y_test
 
 # Good variable names regexes, separated by a comma. If names match any regex,
 # they will always be accepted
