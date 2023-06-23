@@ -2,5 +2,5 @@
 
 pytest==7.3.1
 coverage==7.2.7
-pylint
-dslinter
+pylint==2.12.2
+dslinter==2.0.9
