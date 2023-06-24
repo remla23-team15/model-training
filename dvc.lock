@@ -4,8 +4,8 @@ stages:
     cmd: python3 src/data_preprocess.py --params params.yaml
     deps:
     - path: data/a1_RestaurantReviews_HistoricDump.tsv
-      md5: 102f1f4193e0bdebdd6cce7f13e0a839
-      size: 54686
+      md5: 5e55264c91737a8580763b59bcfaf9d7
+      size: 54687
     - path: src/data_preprocess.py
       md5: aa14a0a0b4592d52fe8ce22f5922be7d
       size: 2553
@@ -42,7 +42,7 @@ stages:
       md5: adc0729039f603fc49137cea0b7a151e
       size: 5551
     - path: ml_models/c1_BoW_Sentiment_Model.pkl
-      md5: 2af75f9c3a46f766b47316c37cd19eab
+      md5: 88360420e9e6bb6df9c3aac51dbaab6d
       size: 39825
   train:
     cmd: python3 src/train.py --params params.yaml
@@ -120,7 +120,7 @@ stages:
       md5: 097c8b95f6b255e5a6a06b29d61fef8e
       size: 6504
     - path: ml_models/c1_BoW_Sentiment_Model.pkl
-      md5: 2af75f9c3a46f766b47316c37cd19eab
+      md5: 88360420e9e6bb6df9c3aac51dbaab6d
       size: 39825
     - path: ml_models/c2_Classifier_Sentiment_Model
       md5: 5ce8a987f82161fb0fc11b2c19ad22ae
