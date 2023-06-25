@@ -6,3 +6,4 @@ dvc==2.58.1
 joblib==1.2.0
 PyYAML==6.0
 negate
+dvc-gdrive==2.20.0
