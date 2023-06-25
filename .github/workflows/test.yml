@@ -8,7 +8,8 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-
+      - uses: iterative/setup-dvc@v1
+      
       # Set Python version
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -25,6 +26,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
+      - name: dvc pull
+        run: |
+          dvc pull
+
       # Install dependencies
       - name: Install dependencies
         run: |
@@ -34,6 +39,7 @@ jobs:
       - name: Download NLTK resources
         run: |
           python -c "import nltk; nltk.download('wordnet'); nltk.download('averaged_perceptron_tagger'); nltk.download('punkt')"
+
 
       # Run tests
       - name: Run tests

@@ -2,19 +2,20 @@ name: Report
 on: [push]
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
       - uses: iterative/setup-cml@v1
+      - uses: iterative/setup-dvc@v1
       - name: Train model
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pip install -r requirements.txt
-          python src/train.py
+          dvc repro
 
           cat outputs/metrics.yaml >> report.md
           # echo "![](./plot.png)" >> report.md
