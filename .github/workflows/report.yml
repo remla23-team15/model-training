@@ -11,6 +11,13 @@ jobs:
           python-version: '3.10'
       - uses: iterative/setup-cml@v1
       - uses: iterative/setup-dvc@v1
+
+      # dvc pull files
+      - name: local config info GDrive
+        run: |
+          dvc remote modify --local myremote gdrive_service_account_json_file_path remla15-57766ff41451.json
+          dvc pull
+
       - name: Train model
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -19,5 +26,4 @@ jobs:
           dvc repro
 
           cat outputs/metrics.yaml >> report.md
-          # echo "![](./plot.png)" >> report.md
           cml comment create report.md
