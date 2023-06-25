@@ -8,7 +8,7 @@ stages:
       size: 54686
     - path: src/data_preprocess.py
       md5: d781b9e228937bd00c453b85bed9e2b2
-      size: 2935
+      # size: 2935
     - path: src/utils.py
       md5: 4ce916760e3f309ed31fd580d0237b28
       size: 1208
