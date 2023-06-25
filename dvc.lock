@@ -68,7 +68,7 @@ stages:
           max_features: 1420
           model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
           destination_directory: data/processed
-          test_size: 0.35
+          test_size: 0.5
         train:
           model_c2: ml_models/c2_Classifier_Sentiment_Model
     outs:
@@ -102,7 +102,7 @@ stages:
           max_features: 1420
           model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
           destination_directory: data/processed
-          test_size: 0.35
+          test_size: 0.5
         eval:
           dataset_eval: data/external/a2_RestaurantReviews_FreshDump.tsv
           metrics_file: outputs/metrics.yaml
@@ -140,7 +140,7 @@ stages:
           max_features: 1420
           model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
           destination_directory: data/processed
-          test_size: 0.35
+          test_size: 0.5
         eval:
           dataset_eval: data/external/a2_RestaurantReviews_FreshDump.tsv
           metrics_file: outputs/metrics.yaml
