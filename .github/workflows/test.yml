@@ -31,6 +31,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-ci.txt
           
+
+      # dvc pull files
+      - name: local config info GDrive
+        run: dvc remote modify --local myremote gdrive_service_account_json_file_path remla15-57766ff41451.json
+
+
+      - name: dvc pull
+        run: |
+          dvc pull
+
       - name: Download NLTK resources
         run: |
           python -c "import nltk; nltk.download('wordnet'); nltk.download('averaged_perceptron_tagger'); nltk.download('punkt')"

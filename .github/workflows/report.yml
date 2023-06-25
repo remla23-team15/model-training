@@ -1,0 +1,33 @@
+name: Report
+on: [push]
+jobs:
+  run:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # dvc pull files and dependencies
+      - name: local config info GDrive
+        run: |
+          pip install -r requirements.txt
+          dvc remote modify --local myremote gdrive_service_account_json_file_path remla15-57766ff41451.json
+          dvc pull
+
+      - name: Train model
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dvc repro
+
+      - name: Upload metrics report
+        uses: actions/upload-artifact@v3
+        with:
+          name: metrics-report
+          path: outputs/metrics.yaml
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
+
+        
