@@ -26,3 +26,6 @@ COPY . .
 
 # Train ML model
 RUN dvc repro
+
+# Upload the ML models to the remote repository
+RUN python upload_ml_models.py
