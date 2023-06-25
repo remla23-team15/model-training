@@ -8,14 +8,27 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
 
-      # dvc pull files and dependencies
+      # Set Python version
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      # Cache dependencies
+      - name: Cache dependencies setup
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Install dependencies
       - name: Install dependencies
         run: |
-          apt-get install --yes gettext-base
+          sudo apt-get install --yes gettext-base
           envsubst < gdrive-auth-template.json > gdrive-auth.json
           pip install -r requirements.txt
 
