@@ -15,6 +15,8 @@ jobs:
       # dvc pull files and dependencies
       - name: Install dependencies
         run: |
+          apt-get install --yes gettext-base
+          envsubst < gdrive-auth-template.json > gdrive-auth.json
           pip install -r requirements.txt
 
       # Train the ML model

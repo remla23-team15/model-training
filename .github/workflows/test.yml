@@ -28,9 +28,10 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: |
+          apt-get install --yes gettext-base
+          envsubst < gdrive-auth-template.json > gdrive-auth.json
           python -m pip install --upgrade pip
           pip install -r requirements-ci.txt
-          
 
       # Download necessary files
       - name: Get files from DVC storage
