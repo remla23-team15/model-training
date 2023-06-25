@@ -32,12 +32,8 @@ jobs:
           pip install -r requirements-ci.txt
           
 
-      # dvc pull files
-      - name: local config info GDrive
-        run: dvc remote modify --local myremote gdrive_service_account_json_file_path remla15-57766ff41451.json
-
-
-      - name: dvc pull
+      # Download necessary files
+      - name: Get files from DVC storage
         run: |
           dvc pull
 

@@ -41,6 +41,7 @@ jobs:
             --tag $IMG:${{ env.version_major }}.${{ env.version_minor }}.latest \
             --tag $IMG:${{ env.version_major }}.latest \
             --tag $IMG:latest \
+            --build-arg gcloud_project_id=${{ secrets.GCLOUD_PROJECT_ID }} gcloud_private_key_id=${{ secrets.GCLOUD_PRIVATE_KEY_ID }} gcloud_private_key=${{ secrets.GCLOUD_PRIVATE_KEY }} gcloud_client_email=${{ secrets.GCLOUD_CLIENT_EMAIL }} gcloud_client_id=${{ secrets.GCLOUD_CLIENT_ID }} gcloud_cert_url=${{ secrets.GCLOUD_CERT_URL }} \
             .
 
           # Push image to registry
