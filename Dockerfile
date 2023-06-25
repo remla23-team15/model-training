@@ -11,6 +11,7 @@ RUN apt-get update --yes && \
     #   the python base image may be rebuilt too seldom sometimes (less than once a month)
     # required for psutil python package to install
     python3-dev \
+    git \
     gcc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
