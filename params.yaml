@@ -2,7 +2,7 @@ base:
   seed: 42
 
 data_preprocess:
-  dataset_train: data/a1_RestaurantReviews_HistoricDump.tsv
+  dataset_train: data/external/a1_RestaurantReviews_HistoricDump.tsv
   max_features: 1420
   model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
   destination_directory: data/processed
@@ -12,6 +12,6 @@ train:
   model_c2: ml_models/c2_Classifier_Sentiment_Model
 
 eval:
-  dataset_eval: data/a2_RestaurantReviews_FreshDump.tsv
+  dataset_eval: data/external/a2_RestaurantReviews_FreshDump.tsv
   metrics_file: outputs/metrics.yaml
   model_c3: outputs/c3_Predicted_Sentiments_Fresh_Dump.tsv
