@@ -62,13 +62,13 @@ stages:
     params:
       params.yaml:
         base:
-          seed: 42
+          seed: 22
         data_preprocess:
           dataset_train: data/external/a1_RestaurantReviews_HistoricDump.tsv
           max_features: 1420
           model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
           destination_directory: data/processed
-          test_size: 0.25
+          test_size: 0.35
         train:
           model_c2: ml_models/c2_Classifier_Sentiment_Model
     outs:
@@ -96,13 +96,13 @@ stages:
     params:
       params.yaml:
         base:
-          seed: 42
+          seed: 22
         data_preprocess:
           dataset_train: data/external/a1_RestaurantReviews_HistoricDump.tsv
           max_features: 1420
           model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
           destination_directory: data/processed
-          test_size: 0.25
+          test_size: 0.35
         eval:
           dataset_eval: data/external/a2_RestaurantReviews_FreshDump.tsv
           metrics_file: outputs/metrics.yaml
@@ -134,13 +134,13 @@ stages:
     params:
       params.yaml:
         base:
-          seed: 42
+          seed: 22
         data_preprocess:
           dataset_train: data/external/a1_RestaurantReviews_HistoricDump.tsv
           max_features: 1420
           model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
           destination_directory: data/processed
-          test_size: 0.25
+          test_size: 0.35
         eval:
           dataset_eval: data/external/a2_RestaurantReviews_FreshDump.tsv
           metrics_file: outputs/metrics.yaml
