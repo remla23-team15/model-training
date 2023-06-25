@@ -6,7 +6,7 @@ data_preprocess:
   max_features: 1420
   model_c1: ml_models/c1_BoW_Sentiment_Model.pkl
   destination_directory: data/processed
-  test_size: 0.5
+  test_size: 0.25
 
 train:
   model_c2: ml_models/c2_Classifier_Sentiment_Model
