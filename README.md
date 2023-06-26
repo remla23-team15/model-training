@@ -22,10 +22,17 @@ Alternatively:
 * Open the project with PyCharm (either Pro or CE)  or your favorite Python IDE
 * Select python (>= 3.8) as project interpreter
 
+#### Add Google Drive Authentication
+Using the file `gdrive-auth-template.json`, create a new file called `gdrive-auth.json` and replace the necessary credentials with your remote Google Cloud application linked to a Google Drive storage.
+
 #### Install Requirements
 Move to  the application folder and run in your terminal:
 ```
+# Install python packages
 pip install -r requirements.txt
+
+# Get DVC data
+dvc pull
 ```
 
 #### Run

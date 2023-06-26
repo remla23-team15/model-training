@@ -1,0 +1,56 @@
+name: Report
+
+# Trigger when branches are pushed
+on: [push]
+
+jobs:
+  run:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      # Set Python version
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      # Cache dependencies
+      - name: Cache dependencies setup
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          sudo apt-get install --yes gettext-base
+          envsubst < gdrive-auth-template.json > gdrive-auth.json
+          pip install -r requirements.txt
+        env:
+          GCLOUD_CERT_URL : ${{ secrets.GCLOUD_CERT_URL }}
+          GCLOUD_CLIENT_EMAIL : ${{ secrets.GCLOUD_CLIENT_EMAIL }}
+          GCLOUD_CLIENT_ID : ${{ secrets.GCLOUD_CLIENT_ID }}
+          GCLOUD_PRIVATE_KEY : ${{ secrets.GCLOUD_PRIVATE_KEY }}
+          GCLOUD_PRIVATE_KEY_ID : ${{ secrets.GCLOUD_PRIVATE_KEY_ID }}
+          GCLOUD_PROJECT_ID : ${{ secrets.GCLOUD_PROJECT_ID }}
+
+      # Train the ML model
+      - name: Train model
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dvc pull
+          dvc repro
+
+      - name: Upload metrics report
+        uses: actions/upload-artifact@v3
+        with:
+          name: metrics-report
+          path: outputs/metrics.yaml
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}

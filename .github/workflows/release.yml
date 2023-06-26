@@ -33,6 +33,9 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
+          sudo apt-get install --yes gettext-base
+          envsubst < gdrive-auth-template.json > gdrive-auth.json
+          
           IMG=ghcr.io/${{ steps.lowercase.outputs.lowercase }}
 
           # Build Docker image
@@ -45,3 +48,10 @@ jobs:
 
           # Push image to registry
           docker push --all-tags $IMG
+        env:
+          GCLOUD_CERT_URL : ${{ secrets.GCLOUD_CERT_URL }}
+          GCLOUD_CLIENT_EMAIL : ${{ secrets.GCLOUD_CLIENT_EMAIL }}
+          GCLOUD_CLIENT_ID : ${{ secrets.GCLOUD_CLIENT_ID }}
+          GCLOUD_PRIVATE_KEY : ${{ secrets.GCLOUD_PRIVATE_KEY }}
+          GCLOUD_PRIVATE_KEY_ID : ${{ secrets.GCLOUD_PRIVATE_KEY_ID }}
+          GCLOUD_PROJECT_ID : ${{ secrets.GCLOUD_PROJECT_ID }}

@@ -5,7 +5,7 @@ stages:
     deps:
     - src/data_preprocess.py
     - src/utils.py
-    - data/a1_RestaurantReviews_HistoricDump.tsv
+    - data/external/a1_RestaurantReviews_HistoricDump.tsv
     outs:
     - data/processed/X.pckl
     - data/processed/X_train.pckl
@@ -54,7 +54,7 @@ stages:
     deps:
     - src/prediction.py
     - src/utils.py
-    - data/a2_RestaurantReviews_FreshDump.tsv
+    - data/external/a2_RestaurantReviews_FreshDump.tsv
     - ml_models/c1_BoW_Sentiment_Model.pkl
     - ml_models/c2_Classifier_Sentiment_Model
     outs:
