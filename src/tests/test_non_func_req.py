@@ -15,8 +15,7 @@ def test_ram_cpu(script_path):
     mem_info = psutil.virtual_memory()
     ram_available = mem_info.available
 
-    max_ram_usage = 0
-    max_cpu_percent = 0
+    max_ram_usage, max_cpu_percent = 0, 0
     while process.poll() is None:
         process_info = psutil.Process(process.pid)
 
@@ -29,10 +28,7 @@ def test_ram_cpu(script_path):
         cpu_percent = psutil.cpu_percent(interval=1)  
         max_cpu_percent = max(max_cpu_percent, cpu_percent)
 
+    max_ram_percent = round(max_ram_usage/ram_available*10, 2)
 
-    max_ram_percent = round(max_ram_usage/ram_available*1000, 2)
-    print(f'max_cpu: {max_cpu_percent}%')
-    print(f'max_ram: {max_ram_percent}%')
-    assert max_cpu_percent < 90, "CPU usage is high, more than 90%"
-    assert max_ram_percent < 90, "RAM usage is high, more than 90%"
-    print("\n\n\nTEST RAM CPU ALL GOOD!!!\n\n\n")
+    assert max_cpu_percent/100 < 0.9, "CPU usage is high, more than 90%"
+    assert max_ram_percent < 0.9, "RAM usage is high, more than 90%"
