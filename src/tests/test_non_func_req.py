@@ -8,8 +8,9 @@ scripts = ['src/train.py', 'src/data_preprocess.py']
 @pytest.mark.parametrize("script_path", scripts)
 def test_ram_cpu(script_path):
 
+    args = ['--params', 'params.yaml']
     # Start the subprocess running the script
-    process = subprocess.Popen(['python', script_path])
+    process = subprocess.Popen(['python', script_path] + args)
 
     mem_info = psutil.virtual_memory()
     ram_available = mem_info.available
