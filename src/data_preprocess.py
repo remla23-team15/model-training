@@ -55,7 +55,8 @@ def main():
 
     # Open the dataset
     log.info("Opening the dataset...")
-    dataset = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A1_PATH, delimiter="\t", quoting=3)
+    dataset = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A1_PATH, delimiter="\t", quoting=3,
+                          dtype={'Review': str, 'Liked': 'Int64'})[['Review', 'Liked']]
 
     log.info(dataset.shape)
     log.info(dataset.head())
