@@ -4,6 +4,7 @@ stages:
     cmd: python3 src/data_preprocess.py --params params.yaml
     deps:
     - path: data/external/a1_RestaurantReviews_HistoricDump.tsv
+      hash: md5
       md5: 102f1f4193e0bdebdd6cce7f13e0a839
       size: 54686
     - path: src/data_preprocess.py
@@ -11,6 +12,7 @@ stages:
       md5: 043071db4bdf8c11b171876867bcc6e4
       size: 3213
     - path: src/utils.py
+      hash: md5
       md5: 4ce916760e3f309ed31fd580d0237b28
       size: 1208
     params:
@@ -25,12 +27,15 @@ stages:
           test_size: 0.25
     outs:
     - path: data/processed/X.pckl
+      hash: md5
       md5: beadf82af4f6aab7052f62bf666fd1d9
       size: 10224163
     - path: data/processed/X_test.pckl
+      hash: md5
       md5: 8c01f4e659df50814be61c9b4ff2c042
       size: 2556162
     - path: data/processed/X_train.pckl
+      hash: md5
       md5: 003be88890100c3a3cc1c9b2c44d1b57
       size: 7668163
     - path: data/processed/y.pckl
@@ -47,12 +52,13 @@ stages:
       size: 5551
     - path: ml_models/c1_BoW_Sentiment_Model.pkl
       hash: md5
-      md5: f83321c3d66334423567b999a0ced03e
+      md5: ead9b86514364a11353fbbe11ad20d8b
       size: 34146
   train:
     cmd: python3 src/train.py --params params.yaml
     deps:
     - path: data/processed/X_train.pckl
+      hash: md5
       md5: 003be88890100c3a3cc1c9b2c44d1b57
       size: 7668163
     - path: data/processed/y_train.pckl
@@ -64,6 +70,7 @@ stages:
       md5: 00fdbf552cde7145f7878430c4710ed3
       size: 1246
     - path: src/utils.py
+      hash: md5
       md5: 4ce916760e3f309ed31fd580d0237b28
       size: 1208
     params:
@@ -87,6 +94,7 @@ stages:
     cmd: python3 src/evaluation.py --params params.yaml
     deps:
     - path: data/processed/X_test.pckl
+      hash: md5
       md5: 8c01f4e659df50814be61c9b4ff2c042
       size: 2556162
     - path: data/processed/y_test.pckl
@@ -102,6 +110,7 @@ stages:
       md5: a43efb249a9cbf6ed599e4b639a33a5b
       size: 2203
     - path: src/utils.py
+      hash: md5
       md5: 4ce916760e3f309ed31fd580d0237b28
       size: 1208
     params:
@@ -122,26 +131,30 @@ stages:
           model_c2: ml_models/c2_Classifier_Sentiment_Model
     outs:
     - path: outputs/metrics.yaml
-      md5: 47b757df5097f15f92d22c3c7dc1d165
+      hash: md5
+      md5: 3e63b9959b684e1c6e59f57b4f6136a7
       size: 108
   prediction:
     cmd: python3 src/prediction.py --params params.yaml
     deps:
     - path: data/external/a2_RestaurantReviews_FreshDump.tsv
+      hash: md5
       md5: 097c8b95f6b255e5a6a06b29d61fef8e
       size: 6504
     - path: ml_models/c1_BoW_Sentiment_Model.pkl
       hash: md5
-      md5: f83321c3d66334423567b999a0ced03e
+      md5: ead9b86514364a11353fbbe11ad20d8b
       size: 34146
     - path: ml_models/c2_Classifier_Sentiment_Model
       hash: md5
       md5: 0341d5dd0a62652a1b40c8b9da965b8f
       size: 46215
     - path: src/prediction.py
+      hash: md5
       md5: 8dae0b884d995d9a99a24707bedeec17
       size: 2166
     - path: src/utils.py
+      hash: md5
       md5: 4ce916760e3f309ed31fd580d0237b28
       size: 1208
     params:
