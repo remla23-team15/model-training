@@ -1,6 +1,7 @@
-FROM python:3.11.3-slim
+# Build stage to install dependencies
+FROM python:3.11.3-slim as build
 
-# Stup ENV variables
+# Setup ENV variables
 ENV GIT_PYTHON_REFRESH=quiet
 
 # Install all OS dependencies for fully functional requirements.txt install
@@ -20,10 +21,23 @@ WORKDIR /root/model-training/
 COPY requirements.txt .
 
 # Install requirements
-RUN python -m pip install --upgrade pip && pip install -r requirements.txt
+RUN python -m pip install --upgrade pip && pip install --user -r requirements.txt
+
+# Build app image
+FROM python:3.11.3-slim as app
+
+# Setup ENV variables
+ENV GIT_PYTHON_REFRESH=quiet
+
+# Set work directory
+WORKDIR /root/model-training/
 
 # Import files
+COPY --from=build /root/.local /root/.local
 COPY . .
+
+# Setup Python path
+ENV PATH=/root/.local/bin:$PATH
 
 # Train ML model
 RUN dvc pull && dvc repro

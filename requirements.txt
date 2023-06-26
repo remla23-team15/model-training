@@ -5,7 +5,6 @@ scikit-learn==1.2.2
 dvc==2.58.1
 joblib==1.2.0
 PyYAML==6.0
-negate==0.7.9
 dvc-gdrive==2.20.0
 pyncclient==0.7
 remla-lib @ git+https://github.com/remla23-team15/lib@main

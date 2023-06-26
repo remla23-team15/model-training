@@ -1,7 +1,11 @@
 *venv
+.dvc/cache/*
+.dvc/tmp/*
 .github
 data/processed/*.pckl
 data/processed/.gitignore
+data/external/*.tsv
+data/.gitignore
 outputs/*.tsv
 outputs/.gitignore
 ml_models
@@ -10,6 +14,7 @@ Dockerfile
 README.md
 .env
 .pytest_cache
+.mypy_cache
 .coverage
 reports
 requirements-ci.txt

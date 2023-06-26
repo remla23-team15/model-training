@@ -2,3 +2,4 @@
 
 pytest==7.3.1
 coverage==7.2.7
+negate==0.7.9
