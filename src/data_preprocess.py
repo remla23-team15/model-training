@@ -2,6 +2,7 @@
 import logging
 import pickle
 import random
+import numpy as np
 
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
@@ -56,7 +57,7 @@ def main():
     # Open the dataset
     log.info("Opening the dataset...")
     dataset = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A1_PATH, delimiter="\t", quoting=3,
-                          dtype={'Review': str, 'Liked': 'Int64'})[['Review', 'Liked']]
+                          dtype={'Review': str, 'Liked': np.int64})[['Review', 'Liked']]
 
     log.info(dataset.shape)
     log.info(dataset.head())
@@ -67,7 +68,7 @@ def main():
 
     # Transform data
     log.info("Transforming the dataset...")
-    print(f'MAX_FEATURES: {MAX_FEATURES}')
+    print(f'{MAX_FEATURES=}')
     X, y, cv = transform_dataset(dataset, corpus, MAX_FEATURES)
 
     # Split dataset
