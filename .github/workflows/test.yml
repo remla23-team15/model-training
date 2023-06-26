@@ -13,7 +13,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
       # Cache dependencies
       - name: Cache dependencies setup
@@ -28,16 +28,20 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: |
+          sudo apt-get install --yes gettext-base
+          envsubst < gdrive-auth-template.json > gdrive-auth.json
           python -m pip install --upgrade pip
           pip install -r requirements-ci.txt
-          
+        env:
+          GCLOUD_CERT_URL : ${{ secrets.GCLOUD_CERT_URL }}
+          GCLOUD_CLIENT_EMAIL : ${{ secrets.GCLOUD_CLIENT_EMAIL }}
+          GCLOUD_CLIENT_ID : ${{ secrets.GCLOUD_CLIENT_ID }}
+          GCLOUD_PRIVATE_KEY : ${{ secrets.GCLOUD_PRIVATE_KEY }}
+          GCLOUD_PRIVATE_KEY_ID : ${{ secrets.GCLOUD_PRIVATE_KEY_ID }}
+          GCLOUD_PROJECT_ID : ${{ secrets.GCLOUD_PROJECT_ID }}
 
-      # dvc pull files
-      - name: local config info GDrive
-        run: dvc remote modify --local myremote gdrive_service_account_json_file_path remla15-57766ff41451.json
-
-
-      - name: dvc pull
+      # Download necessary files
+      - name: Get files from DVC storage
         run: |
           dvc pull
 
