@@ -45,7 +45,7 @@ def parse_params():
     args_parser.add_argument('--params', dest='params', required=True)
     args = args_parser.parse_args()
 
-    with open(args.params) as param_file:
+    with open(args.params, encoding='UTF-8') as param_file:
         params = yaml.safe_load(param_file)
 
     return params
