@@ -15,7 +15,8 @@ def test_ram_cpu(script_path):
     mem_info = psutil.virtual_memory()
     ram_available = mem_info.available
 
-    max_ram_usage, max_cpu_percent = 0, 0
+    max_ram_usage, max_cpu_percent = 0,0
+    
     while process.poll() is None:
         process_info = psutil.Process(process.pid)
 

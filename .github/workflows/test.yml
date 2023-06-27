@@ -1,6 +1,6 @@
 name: Test
 
-# Trigger when branches are pushed
+# Trigger with pull request
 on: [pull_request]
 
 jobs:
