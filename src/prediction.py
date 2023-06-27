@@ -1,3 +1,4 @@
+""" prediction.py """
 import logging
 import os
 import pickle
@@ -10,8 +11,10 @@ import utils
 
 
 def main():
+    """ Main """
 
-    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
+    logging.basicConfig(level=logging.DEBUG,
+                        format="%(asctime)s %(levelname)s %(name)s : %(message)s")
     log = logging.getLogger(__name__)
 
     params = utils.parse_params()
@@ -25,7 +28,8 @@ def main():
 
     # Open the dataset
     log.info("Opening the dataset...")
-    dataset = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A2_PATH, delimiter="\t", quoting=3)
+    dataset = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A2_PATH, delimiter="\t", quoting=3,
+                          dtype={'Review': str})['Review']
     log.info(dataset.tail())
 
     # Clean data
@@ -71,7 +75,7 @@ def main():
         processed_input = cv.transform([review]).toarray()[0]
         prediction = model.predict([processed_input])[0]
 
-        log.info(f"{review} ---> {prediction_map[prediction]}")
+        log.info("%s ---> %s", review, prediction_map[prediction])
 
 
 if __name__ == "__main__":
