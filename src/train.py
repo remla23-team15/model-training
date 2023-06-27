@@ -1,3 +1,4 @@
+""" train.py """
 import logging
 import pickle
 import random
@@ -9,6 +10,7 @@ import utils
 
 
 def train_model(seed, X_train, y_train):
+    """ Train the GaussianNB model using given seed and data """
 
     random.seed(seed)
 
@@ -19,8 +21,9 @@ def train_model(seed, X_train, y_train):
 
 
 def main():
+    """ Main """
 
-    logging.basicConfig(level=logging.DEBUG, 
+    logging.basicConfig(level=logging.DEBUG,
                         format="%(asctime)s %(levelname)s %(name)s : %(message)s")
     log = logging.getLogger(__name__)
     log.info("-------- CLASSIFIER TRAINING ----------")
