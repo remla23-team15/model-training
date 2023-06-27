@@ -1,7 +1,6 @@
 """ data_preprocess.py """
 import logging
 import pickle
-import random
 import numpy as np
 
 import pandas as pd
@@ -52,7 +51,7 @@ def main():
     TEST_SIZE: float = params['data_preprocess']['test_size']
     MODEL_C1_PATH: str = params['data_preprocess']['model_c1']
 
-    random.seed(SEED)
+    np.random.seed(SEED)
 
     # Open the dataset
     log.info("Opening the dataset...")

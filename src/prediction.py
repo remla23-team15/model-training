@@ -29,7 +29,7 @@ def main():
     # Open the dataset
     log.info("Opening the dataset...")
     dataset = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A2_PATH, delimiter="\t", quoting=3,
-                          dtype={'Review': str})['Review']
+                          dtype={'Review': str})[['Review']]
     log.info(dataset.tail())
 
     # Clean data
