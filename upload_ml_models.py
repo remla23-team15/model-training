@@ -1,3 +1,4 @@
+""" Upload ML models to NextCloud """
 import nextcloud_client
 from version_util_python.version_util import VersionUtil
 
@@ -18,7 +19,8 @@ def upload_ml_models():
     try:
         nc.mkdir(versions_lib.model_training_version)
     except nextcloud_client.nextcloud_client.HTTPResponseError:
-        print(f"Remote folder {versions_lib.model_training_version} already exists, let's update the ML models.")
+        print(f"Remote folder {versions_lib.model_training_version} already exists,\
+              let's update the ML models.")
 
     nc.put_file(
         f"/{versions_lib.model_training_version}/c1_BoW_Sentiment_Model.pkl",

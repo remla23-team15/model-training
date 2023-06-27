@@ -1,3 +1,4 @@
+""" evaluation.py """
 import logging
 import pickle
 import random
@@ -10,6 +11,8 @@ import utils
 
 
 def evaluate_model(model, X_test, y_test):
+    """ Evaluate a model by predicting on X_testing
+    and compare to y_test using accuracy, precision, recall and f1-score. """
     y_pred = model.predict(X_test)
 
     # Calculate metrics
@@ -23,7 +26,7 @@ def evaluate_model(model, X_test, y_test):
 
 
 def evaluate_prediction(y_test, y_pred):
-    # Calculate metrics
+    """ Calculate metrics """
     metrics = {}
     metrics["acc"] = float(accuracy_score(y_test, y_pred))
     metrics["precision"] = float(precision_score(y_test, y_pred))
@@ -33,7 +36,9 @@ def evaluate_prediction(y_test, y_pred):
     return metrics
 
 def main():
-    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
+    """ main """
+    logging.basicConfig(level=logging.DEBUG,
+                        format="%(asctime)s %(levelname)s %(name)s : %(message)s")
     log = logging.getLogger(__name__)
     log.info("-------- CLASSIFIER PREDICTIONS ----------")
 
@@ -48,7 +53,7 @@ def main():
     # Import model
     model = joblib.load(utils.SCRIPTS_PATH / MODEL_C2_PATH)
 
-    # Import data 
+    # Import data
     X_test = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "X_test.pckl").read_bytes())
     y_test = pickle.loads((utils.SCRIPTS_PATH / DESTINATION_DIR / "y_test.pckl").read_bytes())
 
@@ -57,7 +62,7 @@ def main():
     metrics = evaluate_model(model, X_test, y_test)
 
     # Save metrics
-    with open(utils.SCRIPTS_PATH / METRICS_PATH, 'w') as file:
+    with open(utils.SCRIPTS_PATH / METRICS_PATH, 'w', encoding='UTF-8') as file:
         yaml.dump(metrics, file, default_flow_style=False)
 
 

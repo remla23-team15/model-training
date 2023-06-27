@@ -1,6 +1,7 @@
+""" data_preprocess.py """
 import logging
 import pickle
-import random
+import numpy as np
 
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
@@ -10,11 +11,13 @@ import utils
 
 
 def preprocess_dataset(dataset):
+    """ Preprocess: remove stopwords """
     corpus = utils.remove_stopwords(dataset)
     return corpus
 
 
 def transform_dataset(dataset, corpus, MAX_FEATURES):
+    """ Transform dataset ... """
     cv = CountVectorizer(max_features=MAX_FEATURES)
 
     X = cv.fit_transform(corpus).toarray()
@@ -24,19 +27,22 @@ def transform_dataset(dataset, corpus, MAX_FEATURES):
 
 
 def split_dataset(X, y, TEST_SIZE, SEED):
-    X_train, X_test, y_train, y_test = train_test_split(X, 
-                                                        y, 
-                                                        test_size=TEST_SIZE, 
+    """ Split dataset in train and test sets. """
+    X_train, X_test, y_train, y_test = train_test_split(X,
+                                                        y,
+                                                        test_size=TEST_SIZE,
                                                         random_state=SEED)
     return X_train, X_test, y_train, y_test
 
 
 def main():
-    
-    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s : %(message)s")
+    """ Main """
+
+    logging.basicConfig(level=logging.DEBUG,
+                        format="%(asctime)s %(levelname)s %(name)s : %(message)s")
     log = logging.getLogger(__name__)
     log.info("-------- DATA PRE-PROCESSING ----------")
-    
+
     params = utils.parse_params()
     SEED: int = params['base']['seed']
     DATASET_A1_PATH: str = params['data_preprocess']['dataset_train']
@@ -45,11 +51,12 @@ def main():
     TEST_SIZE: float = params['data_preprocess']['test_size']
     MODEL_C1_PATH: str = params['data_preprocess']['model_c1']
 
-    random.seed(SEED)
+    np.random.seed(SEED)
 
     # Open the dataset
     log.info("Opening the dataset...")
-    dataset = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A1_PATH, delimiter="\t", quoting=3)
+    dataset = pd.read_csv(utils.SCRIPTS_PATH / DATASET_A1_PATH, delimiter="\t", quoting=3,
+                          dtype={'Review': str, 'Liked': np.int32})[['Review', 'Liked']]
 
     log.info(dataset.shape)
     log.info(dataset.head())
@@ -60,7 +67,7 @@ def main():
 
     # Transform data
     log.info("Transforming the dataset...")
-    print(f'MAX_FEATURES: {MAX_FEATURES}')
+    print(f'{MAX_FEATURES=}')
     X, y, cv = transform_dataset(dataset, corpus, MAX_FEATURES)
 
     # Split dataset
