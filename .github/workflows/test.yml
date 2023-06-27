@@ -1,7 +1,7 @@
 name: Test
 
 # Trigger when branches are pushed
-on: [push]
+on: [pull_request]
 
 jobs:
   build:
