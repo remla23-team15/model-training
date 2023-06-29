@@ -31,7 +31,7 @@ Move to  the application folder and run in your terminal:
 # Install python packages
 pip install -r requirements.txt
 
-# Get DVC data
+# Get the dataset from the DVC remote storage
 dvc pull
 ```
 
@@ -62,6 +62,24 @@ coverage html
 # To generate a full JSON report
 coverage json
 ```
+
+#### Lint
+To assess the code quality using PyLint with dslinter plugin, execute the following commands:
+``` 
+# Install CI requirements 
+pip install -r requirements-ci.txt
+
+# Execute pylint on the src files
+pylint pylint src
+```
+
+#### Upload The ML Models
+Move to  the application folder and run in your terminal:
+```
+python upload_ml_models.py
+```
+
+The models will be uploaded in the remote repository: https://liv.nl.tab.digital/s/TyPqR5HCjExqNQq
 
 ## Docker
 To build a Docker image of the application, you can open the terminal (in the application folder) and run:
